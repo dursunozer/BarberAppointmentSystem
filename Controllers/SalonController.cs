@@ -16,7 +16,7 @@ namespace BarberAppointmentSystem.Controllers
         new Employee(){Id=2, Email = "Kudret", FirstName = "kudret", LastName = "Özer",TelNo="000",Password="123" },
         new Employee(){Id=3, Email = "Samed", FirstName = "samed", LastName = "Özer",TelNo="000",Password="123" }
         };
-        Admin admin = new Admin()
+        Admin adm = new Admin()
         {
             AdminNo = "admin",
             Password = "admin"
@@ -59,10 +59,18 @@ namespace BarberAppointmentSystem.Controllers
         }
         public IActionResult AdminLogin(Admin admin)
         {
-            if ()
+            if (adm.AdminNo == admin.AdminNo && adm.Password == admin.Password)
             {
-                
+                HttpContext.Session.SetString("SessionUser", "Admin");
+                var cookie = new CookieOptions()
+                {
+                    Expires = DateTime.Now.AddMinutes(1)
+                };
+                //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
+                return RedirectToAction("YetkiliUserSayfası");
             }
+            TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
+            return RedirectToAction("Index");
         }
         // GET: SalonController
         public ActionResult Index()
