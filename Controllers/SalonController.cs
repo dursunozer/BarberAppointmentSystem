@@ -33,7 +33,7 @@ namespace BarberAppointmentSystem.Controllers
                         Expires = DateTime.Now.AddMinutes(1)
                     };
                     //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
-                    return RedirectToAction("YetkiliUserSayfası");
+                    return RedirectToAction("CustomerDashboard");
                 }
             }
             TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
@@ -51,7 +51,7 @@ namespace BarberAppointmentSystem.Controllers
                         Expires = DateTime.Now.AddMinutes(1)
                     };
                     //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
-                    return RedirectToAction("YetkiliUserSayfası");
+                    return RedirectToAction("EmployeeDashboard");
                 }
             }
             TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
@@ -67,9 +67,16 @@ namespace BarberAppointmentSystem.Controllers
                     Expires = DateTime.Now.AddMinutes(1)
                 };
                 //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
-                return RedirectToAction("YetkiliUserSayfası");
+                return RedirectToAction("AdminDashboard");
             }
             TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
+            return RedirectToAction("Index");
+        }
+        public IActionResult Logout()
+        {
+            TempData["Hata"] = "Oturum Başarılı Bir Şekilde Sonlandırıldı!";
+            HttpContext.Session.Clear();
+            //HttpContext.Response.Cookies.Delete("CookieColor");
             return RedirectToAction("Index");
         }
         // GET: SalonController
