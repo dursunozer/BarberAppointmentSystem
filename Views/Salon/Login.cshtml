@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Giriş Ekranı";
+}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+        <div class="card-body">
+            <h1 class="h4 text-center mb-4 text-primary">Sisteme Giriş</h1>
+
+            <form method="post" asp-action="Login" class="needs-validation" novalidate>
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label">E-posta</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope-fill"></i>
+                        </span>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="E-posta adresinizi giriniz" required />
+                        <div class="invalid-feedback">
+                            Lütfen geçerli bir e-posta adresi giriniz.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Şifre</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Şifrenizi giriniz" required />
+                        <div class="invalid-feedback">
+                            Şifre boş bırakılamaz.
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+            </form>
+
+            @if (TempData["Hata"] != null)
+            {
+                <div class="alert alert-danger mt-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> @TempData["Hata"]
+                </div>
+            }
+
+            <div class="text-center mt-3">
+                <small>Hesabınız yok mu? <a href="#" class="text-decoration-none text-primary">Kayıt Olun</a></small>
+            </div>
+        </div>
+    </div>
+</div>

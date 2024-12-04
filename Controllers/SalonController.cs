@@ -1,4 +1,5 @@
-﻿using BarberAppointmentSystem.Models;
+﻿using BarberAppointmentSystem.Extensions;
+using BarberAppointmentSystem.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,78 +8,109 @@ namespace BarberAppointmentSystem.Controllers
     public class SalonController : Controller
     {
         static List<Customer> customers = new List<Customer>() {
-        new Customer(){Id=1, Email = "Dursun", FirstName = "Dursun", LastName = "Özer",TelNo="000",Password="123" },
-        new Customer(){Id=2, Email = "Kudret", FirstName = "kudret", LastName = "Özer",TelNo="000",Password="123" },
-        new Customer(){Id=3, Email = "Samed", FirstName = "samed", LastName = "Özer",TelNo="000",Password="123" }
+            new Customer(){Id=1, Email = "Dursun", FirstName = "Dursun", LastName = "Özer",TelNo="000",Password="123" },
+            new Customer(){Id=2, Email = "Kudret", FirstName = "Kudret", LastName = "Özer",TelNo="000",Password="123" },
+            new Customer(){Id=3, Email = "Samed", FirstName = "Samed", LastName = "Özer",TelNo="000",Password="123" }
         };
+
         static List<Employee> employees = new List<Employee>() {
-        new Employee(){Id=1, Email = "Dursun", FirstName = "Dursun", LastName = "Özer",TelNo="000",Password="123" },
-        new Employee(){Id=2, Email = "Kudret", FirstName = "kudret", LastName = "Özer",TelNo="000",Password="123" },
-        new Employee(){Id=3, Email = "Samed", FirstName = "samed", LastName = "Özer",TelNo="000",Password="123" }
+            new Employee(){Id=1, Email = "ali", FirstName = "ali", LastName = "Özer",TelNo="000",Password="123" },
+            new Employee(){Id=2, Email = "Veli", FirstName = "Kudret", LastName = "Özer",TelNo="000",Password="123" },
+            new Employee(){Id=3, Email = "Deli", FirstName = "Samed", LastName = "Özer",TelNo="000",Password="123" }
         };
-        Admin adm = new Admin()
+
+        Admin admin = new Admin()
         {
             AdminNo = "admin",
             Password = "admin"
         };
-        public IActionResult CustomerLogin(Customer customer)
+
+        public IActionResult AdminLogin()
         {
-            foreach (var cust in customers)
+            var sessionAdmin = HttpContext.Session.Get<Admin>("AdminSession");
+            if (sessionAdmin != null)
             {
-                if (cust.Email == customer.Email && cust.Password == customer.Password)
-                {
-                    HttpContext.Session.SetString("SessionUser", cust.FirstName);
-                    var cookie = new CookieOptions()
-                    {
-                        Expires = DateTime.Now.AddMinutes(1)
-                    };
-                    //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
-                    return RedirectToAction("CustomerDashboard");
-                }
+                return View("AdminSession");
             }
-            TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
-            return RedirectToAction("Index");
+
+            TempData["Hata"] = "Oturum bilgisi bulunamadı!";
+            return RedirectToAction("Login");
         }
-        public IActionResult EmployeeLogin(Employee employee)
-        {    
-            foreach (var emp in employees)
-            {
-                if (emp.Email == employee.Email && emp.Password == employee.Password)
-                {
-                    HttpContext.Session.SetString("SessionUser", emp.FirstName);
-                    var cookie = new CookieOptions()
-                    {
-                        Expires = DateTime.Now.AddMinutes(1)
-                    };
-                    //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
-                    return RedirectToAction("EmployeeDashboard");
-                }
-            }
-            TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
-            return RedirectToAction("Index");
-        }
-        public IActionResult AdminLogin(Admin admin)
+
+        public IActionResult Login()
         {
-            if (adm.AdminNo == admin.AdminNo && adm.Password == admin.Password)
-            {
-                HttpContext.Session.SetString("SessionUser", "Admin");
-                var cookie = new CookieOptions()
-                {
-                    Expires = DateTime.Now.AddMinutes(1)
-                };
-                //HttpContext.Response.Cookies.Append("CookieColor", u.UserColor, cookie);
-                return RedirectToAction("AdminDashboard");
-            }
-            TempData["Hata"] = "Kullanıcı adı veya parola hatalı!";
-            return RedirectToAction("Index");
+            return View();
         }
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            // Admin kontrolü
+            if (email == admin.AdminNo && password == admin.Password)
+            {
+                HttpContext.Session.Set("AdminSession", admin);
+                return RedirectToAction("AdminLogin");
+            }
+
+            // Customer kontrolü
+            var matchingCustomer = customers.FirstOrDefault(c => c.Email == email && c.Password == password);
+            if (matchingCustomer != null)
+            {
+                HttpContext.Session.SetString("SessionRole", "Customer");
+                HttpContext.Session.SetString("SessionUser", matchingCustomer.FirstName);
+                return RedirectToAction("CustomerSession");
+            }
+
+            // Employee kontrolü
+            var matchingEmployee = employees.FirstOrDefault(e => e.Email == email && e.Password == password);
+            if (matchingEmployee != null)
+            {
+                HttpContext.Session.SetString("SessionRole", "Employee");
+                HttpContext.Session.SetString("SessionUser", matchingEmployee.FirstName);
+                return RedirectToAction("EmployeeSession");
+            }
+
+            TempData["Hata"] = "Kullanıcı bilgileri hatalı. Lütfen kontrol ediniz.";
+            return RedirectToAction("Login");
+        }
+
+
+        public IActionResult CustomerSession()
+        {
+            var sessionUser = HttpContext.Session.GetString("SessionUser");
+            if (!string.IsNullOrEmpty(sessionUser))
+            {
+                return View();
+            }
+
+            TempData["Hata"] = "Oturum bulunamadı!";
+            return RedirectToAction("Login");
+        }
+
+        public IActionResult EmployeeSession()
+        {
+            var sessionUser = HttpContext.Session.GetString("SessionUser");
+            if (!string.IsNullOrEmpty(sessionUser))
+            {
+                return View();
+            }
+
+            TempData["Hata"] = "Oturum bulunamadı!";
+            return RedirectToAction("Login");
+        }
+
         public IActionResult Logout()
         {
-            TempData["Hata"] = "Oturum Başarılı Bir Şekilde Sonlandırıldı!";
             HttpContext.Session.Clear();
-            //HttpContext.Response.Cookies.Delete("CookieColor");
-            return RedirectToAction("Index");
+            TempData["Hata"] = "Oturum Başarılı Bir Şekilde Sonlandırıldı!";
+            return RedirectToAction("Login");
         }
+
+        public IActionResult Details()
+        {
+            return View();
+        }
+
         // GET: SalonController
         public ActionResult Index()
         {

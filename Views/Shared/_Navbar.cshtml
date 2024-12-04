@@ -1,13 +1,27 @@
-﻿<nav class="navbar navbar-expand-sm navbar-dark bg-danger">
+﻿<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Ozer Kuaför</a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a asp-controller="Home" asp-action="Index" class="nav-link">Ana Sayfa</a>
-            </li>
-            <li class="nav-item">
-                <a asp-controller="Salon" asp-action="CustomerLogin" class="nav-link">Kişisel Bilgiler</a>
-            </li>
-        </ul>
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Özer Kuaför</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a asp-controller="Salon" asp-action="Index" class="nav-link">Ana Sayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Salon" asp-action="Login" class="nav-link">Giriş Yap</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Salon" asp-action="CustomerSession" class="nav-link">Yeni Müşteri Kaydı</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Salon" asp-action="Details" class="nav-link">Kişisel Bilgiler</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Salon" asp-action="Logout" class="nav-link text-danger">Çıkış</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
