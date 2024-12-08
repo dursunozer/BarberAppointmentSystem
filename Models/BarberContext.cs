@@ -7,19 +7,30 @@ namespace BarberAppointmentSystem.Data
     {
         public BarberContext(DbContextOptions<BarberContext> options) : base(options) { }
 
-        // Müşteri Tablosu
         public DbSet<Customer> Customers { get; set; }
-
-        // Çalışan Tablosu
         public DbSet<Employee> Employees { get; set; }
-
-        // Yönetici Tablosu
         public DbSet<Admin> Admins { get; set; }
-
-        // Randevu Tablosu
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Services> Services { get; set; }
 
-        // Hizmet Tablosu
-        //public DbSet<Service> Services { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Özel ilişki tanımlamaları yapılabilir
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Customer)
+                .WithMany(c => c.Appointments)
+                .HasForeignKey(a => a.CustomerId);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Employee)
+                .WithMany(e => e.Appointments)
+                .HasForeignKey(a => a.EmployeeId);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Service)
+                .WithMany(s => s.Appointments)
+                .HasForeignKey(a => a.ServiceId);
+        }
     }
+
 }

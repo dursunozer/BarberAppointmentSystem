@@ -92,7 +92,7 @@ namespace BarberAppointmentSystem.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            TempData["Hata"] = "Oturum Başarılı Bir Şekilde Sonlandırıldı!";
+            TempData["Mesaj"] = "Oturum Başarılı Bir Şekilde Sonlandırıldı!";
             return RedirectToAction("Login");
         }
     }
