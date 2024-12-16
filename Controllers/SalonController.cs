@@ -28,7 +28,7 @@ namespace BarberAppointmentSystem.Controllers
             if (admin != null)
             {
                 HttpContext.Session.Set("AdminSession", admin);
-                return RedirectToAction("AdminSession");
+                return RedirectToAction("Dashboard", "Admin");
             }
 
             // Customer kontrolü

@@ -30,6 +30,9 @@ namespace BarberAppointmentSystem.Data
                 .HasOne(a => a.Service)
                 .WithMany(s => s.Appointments)
                 .HasForeignKey(a => a.ServiceId);
+
+            modelBuilder.Entity<Services>().HasKey(s => s.ServiceId); // Eğer bir primary key varsa
+            base.OnModelCreating(modelBuilder);
         }
     }
 

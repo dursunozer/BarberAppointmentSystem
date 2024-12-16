@@ -4,6 +4,7 @@ using BarberAppointmentSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BarberAppointmentSystem.Migrations
 {
     [DbContext(typeof(BarberContext))]
-    partial class BarberContextModelSnapshot : ModelSnapshot
+    [Migration("20241209102839_mig-appointment-table")]
+    partial class migappointmenttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace BarberAppointmentSystem.Migrations
 
                     b.HasKey("AdminId");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("BarberAppointmentSystem.Models.Appointment", b =>
@@ -75,7 +78,7 @@ namespace BarberAppointmentSystem.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("BarberAppointmentSystem.Models.Customer", b =>
@@ -108,7 +111,7 @@ namespace BarberAppointmentSystem.Migrations
 
                     b.HasKey("CustomerId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("BarberAppointmentSystem.Models.Employee", b =>
@@ -148,7 +151,7 @@ namespace BarberAppointmentSystem.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("BarberAppointmentSystem.Models.Services", b =>
@@ -172,7 +175,7 @@ namespace BarberAppointmentSystem.Migrations
 
                     b.HasKey("ServiceId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("BarberAppointmentSystem.Models.Appointment", b =>

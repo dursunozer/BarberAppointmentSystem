@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Admin Dashboard</h1>
+
+<div style="display: flex; gap: 20px;">
+    <!-- Günlük Kazanç -->
+    <div style="border: 1px solid #ccc; padding: 20px; width: 30%;">
+        <h2>Günlük Kazanç</h2>
+        <p>@ViewBag.DailyEarnings TL</p>
+    </div>
+
+    <!-- Çalışan Durumu -->
+    <div style="border: 1px solid #ccc; padding: 20px; width: 60%;">
+        <h2>Çalışan Durumu</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Adı</th>
+                    <th>Durumu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in ViewBag.Employees)
+                {
+                    <tr>
+                        <td>@employee.FirstName @employee.LastName @employee.Role</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

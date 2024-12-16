@@ -57,13 +57,23 @@ namespace YourProjectNamespace.Controllers
         // Admin Dashboard
         public IActionResult Dashboard()
         {
-            var customerCount = _context.Customers.Count();
-            var employeeCount = _context.Employees.Count();
-            var appointmentCount = _context.Appointments.Count();
+            ViewBag.DailyEarnings = _context.Appointments
+                                            .Where(a => a.AppointmentDate == DateTime.Today)
+                                            .Sum(a => a.Service.Price);
 
-            ViewData["CustomerCount"] = customerCount;
-            ViewData["EmployeeCount"] = employeeCount;
-            ViewData["AppointmentCount"] = appointmentCount;
+            // Çalışan durumları (örnek veri)
+            ViewBag.Employees = _context.Employees.Select(e => new
+            {
+                e.EmployeeId,
+                e.FirstName,
+                e.LastName,
+                e.Role,
+                //Status = e.IsAvailable ? "Uygun" : "Meşgul"
+            }).ToList();
+
+            //ViewData["CustomerCount"] = customerCount;
+            //ViewData["EmployeeCount"] = employeeCount;
+            //ViewData["AppointmentCount"] = appointmentCount;
 
             return View();
         }
