@@ -4,6 +4,10 @@
 
 <h1>Admin Dashboard</h1>
 
+@section AdminSidebar{
+    @await Html.PartialAsync("_AdminSidebar")
+}
+
 <div style="display: flex; gap: 20px;">
     <!-- Günlük Kazanç -->
     <div style="border: 1px solid #ccc; padding: 20px; width: 30%;">

@@ -1,0 +1,24 @@
+/* Sidebar */
+#sidebar {
+    width: 250px;
+    height: 100%;
+    position: fixed; /* Sabit konumda kals?n */
+    top: 0; /* Yukar?dan ba?las?n */
+    left: 0;
+    background-color: #343a40;
+    z-index: 1000; /* Header'?n alt?na dü?memesi için */
+    overflow-y: auto;
+    transition: all 0.3s;
+}
+
+/* Header (Navbar gibi üst k?s?m) */
+#header {
+    position: fixed; /* Sabit konum */
+    top: 0;
+    left: 250px; /* Sidebar geni?li?i kadar sola kayd?r */
+    right: 0;
+    background-color: #212529;
+    z-index: 999; /* Sidebar'?n alt?nda kalmas?n */
+    padding: 10px;
+    color: white;
+}
